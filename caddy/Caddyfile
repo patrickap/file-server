@@ -1,0 +1,13 @@
+{
+  debug
+}
+
+ocis.cloud.local {
+  tls internal
+	reverse_proxy ocis:9200
+}
+
+bitwarden.cloud.local {
+  tls internal
+	reverse_proxy bitwarden:80
+}

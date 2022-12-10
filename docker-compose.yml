@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  ocis:
+    image: owncloud/ocis:2.0.0
+    restart: always
+    env_file:
+      - ./ocis/.env
+    entrypoint:
+      - /bin/sh
+    # initialize ocis configuration file with random secrets
+    command: ['-c', 'ocis init || true; ocis server']
+    ports:
+      - 9200
+    volumes:
+      - ./ocis/config:/etc/ocis
+      # FIXME: bind mounts are currently not fully supported on macOS
+      # user permissions must be set correctly for ocis to work as well
+      # https://doc.owncloud.com/ocis/next/deployment/container/container-setup.html#preparation
+      # - ./ocis/data:/var/lib/ocis
+    logging:
+      driver: local
+
+  caddy:
+    image: caddy:2.6.2
+    restart: always
+    ports:
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/config:/config
+      - ./caddy/data:/data
+
+  coredns:
+    image: coredns/coredns:1.9.4
+    restart: always
+    env_file:
+      - ./coredns/.env
+    # set config path
+    command: ['-conf', '/etc/coredns/Corefile']
+    ports:
+      - 53:53
+      - 53:53/udp
+    volumes:
+      - ./coredns/Corefile:/etc/coredns/Corefile:ro
+      - ./coredns/db.cloud.local:/db.cloud.local:ro

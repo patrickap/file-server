@@ -1,0 +1,13 @@
+cloud.local {
+    file db.cloud.local
+    log
+		health
+    errors
+}
+
+. {
+    log
+		health
+    errors
+    forward . 8.8.8.8
+}
