@@ -8,5 +8,5 @@ $ORIGIN cloud.local.
                                              1h         ; nxdomain ttl
                                             )
                      IN NS  ns.cloud.local.
-@                    IN A   <host_ip>
-*                    IN A   <host_ip>
+@                    IN A   ${HOST_IP}
+*                    IN A   ${HOST_IP}
