@@ -34,8 +34,6 @@ services:
   coredns:
     image: coredns/coredns:1.9.4
     restart: always
-    env_file:
-      - ./coredns/.env
     # set config path
     command: ['-conf', '/etc/coredns/Corefile']
     ports:
