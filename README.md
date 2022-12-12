@@ -6,9 +6,36 @@ Private file serve including dns server and reverse proxy. 📁
 
 0. install dependencies
 
-- docker
-- docker-compose
-- rclone
+```bash
+# update package index
+sudo apt-get update
+
+# install docker dependencies
+sudo apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+
+# install docker gpg key
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# setup docker repository
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# update package index
+sudo apt-get update
+
+# install docker-compose
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+# install rclone
+sudo -v ; curl https://rclone.org/install.sh | sudo bash
+```
 
 2. setup rclone backup
 
