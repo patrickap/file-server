@@ -6,3 +6,13 @@ ocis.cloud.local {
   tls internal
 	reverse_proxy ocis:9200
 }
+
+portainer.cloud.local {
+  tls internal
+	reverse_proxy portainer:9000
+}
+
+netdata.cloud.local {
+  tls internal
+	reverse_proxy netdata:19999
+}

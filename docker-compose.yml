@@ -21,6 +21,17 @@ services:
     logging:
       driver: local
 
+  portainer:
+    image: portainer/portainer-ce:2.16.2
+    restart: always
+    volumes:
+      - ./portainer/data:/data
+      # provide os information for portainer
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 9000:9000
+
   caddy:
     image: caddy:2.6.2
     restart: always
@@ -42,3 +53,22 @@ services:
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile:ro
       - ./coredns/db.cloud.local:/db.cloud.local:ro
+
+  netdata:
+    image: netdata/netdata
+    restart: always
+    ports:
+      - 19999:19999
+    # add necessary capabilities to netdata
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - ./netdata/config:/etc/netdata
+      - ./netdata/lib:/var/lib/netdata
+      - ./netdata/cache:/var/cache/netdata
+      # provide os information for netdata agent
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro

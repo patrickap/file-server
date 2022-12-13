@@ -33,7 +33,7 @@ sudo apt-get update
 # install docker-compose
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
 
-# enable non-root user to use execute docker
+# enable non-root user to execute docker
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
@@ -42,23 +42,23 @@ newgrp docker
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
 ```
 
-2. setup rclone backup
+2. start containers
+
+```bash
+sh ./start.sh
+```
+
+3. setup rclone backup
 
 ```bash
 rclone config
 ```
 
-3. add backup cronjob
+4. add backup cronjob
 
 ```bash
 crontab -e
 
 # backup data every day at 3am using rclone
 0 3 * * * (rclone copy <config_name>:<remote_path> <local_path>)
-```
-
-4. start containers
-
-```bash
-sh ./start.sh
 ```
