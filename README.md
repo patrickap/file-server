@@ -31,7 +31,7 @@ echo \
 sudo apt-get update
 
 # install docker-compose
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
 
 # enable non-root user to use execute docker
 sudo groupadd docker
