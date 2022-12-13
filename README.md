@@ -42,7 +42,7 @@ newgrp docker
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
 ```
 
-1. rename all `filename.example`files to `filename` and set all required values.
+1. rename all `filename.example` files to `filename` and set all required values.
 
 2. start containers
 
