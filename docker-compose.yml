@@ -55,7 +55,7 @@ services:
       - ./coredns/db.cloud.local:/db.cloud.local:ro
 
   netdata:
-    image: netdata/netdata
+    image: netdata/netdata:1.37.1
     restart: always
     ports:
       - 19999:19999
