@@ -42,10 +42,12 @@ newgrp docker
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
 ```
 
+1. rename all `filename.example`files to `filename` and set all required values.
+
 2. start containers
 
 ```bash
-sh ./start.sh
+docker-compose up -d
 ```
 
 3. setup rclone backup
