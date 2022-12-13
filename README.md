@@ -33,6 +33,11 @@ sudo apt-get update
 # install docker-compose
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
+# enable non-root user to use execute docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
 # install rclone
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
 ```
