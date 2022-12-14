@@ -1,21 +1,41 @@
 version: '3.7'
 
 services:
-  sftpgo:
-    image: drakkan/sftpgo:v2.4.2
+  ocis:
+    image: owncloud/ocis:2.0.0
     restart: always
     env_file:
-      - ./sftpgo/.env
+      - ./ocis/.env
+    entrypoint:
+      - /bin/sh
+    # initialize ocis configuration file with random secrets
+    command: ['-c', 'ocis init || true; ocis server']
     ports:
-      # http
-      - 8080
-      # sftp
-      - 2022:2022
-      # webdav
-      - 10080
-    volumes:
-      - ./sftpgo/config:/var/lib/sftpgo
-      - ./sftpgo/data:/srv/sftpgo
+      - 9200
+    # volumes:
+    # bind mounts are currently limited
+    # user permissions must be set correctly for ocis to work
+    # https://doc.owncloud.com/ocis/next/deployment/container/container-setup.html#preparation
+    # - ./ocis/config:/etc/ocis
+    # - ./ocis/data:/var/lib/ocis
+    logging:
+      driver: local
+
+  # sftpgo:
+  #   image: drakkan/sftpgo:v2.4.2
+  #   restart: always
+  #   env_file:
+  #     - ./sftpgo/.env
+  #   ports:
+  #     # http
+  #     - 8080
+  #     # sftp
+  #     - 2022:2022
+  #     # webdav
+  #     - 10080
+  #   volumes:
+  #     - ./sftpgo/config:/var/lib/sftpgo
+  #     - ./sftpgo/data:/srv/sftpgo
 
   portainer:
     image: portainer/portainer-ce:2.16.2
