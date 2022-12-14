@@ -14,14 +14,14 @@ services:
       # webdav
       - 10080
     volumes:
-      - sftpgo_config:/var/lib/sftpgo
-      - sftpgo_data:/srv/sftpgo
+      - ./sftpgo/config:/var/lib/sftpgo
+      - ./sftpgo/data:/srv/sftpgo
 
   portainer:
     image: portainer/portainer-ce:2.16.2
     restart: always
     volumes:
-      - portainer_data:/data
+      - ./portainer/data:/data
       # provide os information for portainer
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -35,8 +35,8 @@ services:
       - 443:443
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_config:/config
-      - caddy_data:/data
+      - ./caddy/config:/config
+      - ./caddy/data:/data
 
   coredns:
     image: coredns/coredns:1.9.4
@@ -49,10 +49,3 @@ services:
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile:ro
       - ./coredns/db.cloud.local:/db.cloud.local:ro
-
-volumes:
-  sftpgo_config:
-  sftpgo_data:
-  portainer_data:
-  caddy_config:
-  caddy_data:
