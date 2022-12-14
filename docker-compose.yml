@@ -34,7 +34,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_config:/config
       - caddy_data:/data
 
@@ -47,8 +47,8 @@ services:
       - 53:53
       - 53:53/udp
     volumes:
-      - ./coredns/Corefile:/etc/coredns/Corefile:ro
-      - ./coredns/db.cloud.local:/db.cloud.local:ro
+      - ./Corefile:/etc/coredns/Corefile:ro
+      - ./db.cloud.local:/db.cloud.local:ro
 
 volumes:
   portainer_data:
