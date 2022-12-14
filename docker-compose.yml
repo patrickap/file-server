@@ -12,36 +12,20 @@ services:
     command: ['-c', 'ocis init || true; ocis server']
     ports:
       - 9200
-    # volumes:
-    # bind mounts are currently limited
-    # user permissions must be set correctly for ocis to work
-    # https://doc.owncloud.com/ocis/next/deployment/container/container-setup.html#preparation
-    # - ./ocis/config:/etc/ocis
-    # - ./ocis/data:/var/lib/ocis
+    volumes:
+      # bind mounts are currently limited
+      # user permissions must be set correctly for ocis to work
+      # https://doc.owncloud.com/ocis/next/deployment/container/container-setup.html#preparation
+      - ocis_config:/etc/ocis
+      - ocis_data:/var/lib/ocis
     logging:
       driver: local
-
-  # sftpgo:
-  #   image: drakkan/sftpgo:v2.4.2
-  #   restart: always
-  #   env_file:
-  #     - ./sftpgo/.env
-  #   ports:
-  #     # http
-  #     - 8080
-  #     # sftp
-  #     - 2022:2022
-  #     # webdav
-  #     - 10080
-  #   volumes:
-  #     - ./sftpgo/config:/var/lib/sftpgo
-  #     - ./sftpgo/data:/srv/sftpgo
 
   portainer:
     image: portainer/portainer-ce:2.16.2
     restart: always
     volumes:
-      - ./portainer/data:/data
+      - portainer_data:/data
       # provide os information for portainer
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -55,8 +39,8 @@ services:
       - 443:443
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./caddy/config:/config
-      - ./caddy/data:/data
+      - caddy_config:/config
+      - caddy_data:/data
 
   coredns:
     image: coredns/coredns:1.9.4
@@ -69,3 +53,10 @@ services:
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile:ro
       - ./coredns/db.cloud.local:/db.cloud.local:ro
+
+volumes:
+  ocis_config:
+  ocis_data:
+  portainer_data:
+  caddy_config:
+  caddy_data:
