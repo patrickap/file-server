@@ -2,23 +2,21 @@
   debug
 }
 
-sftpgo.cloud.local {
+sftpgo.cloud.local:80 {
   tls internal
-
-  handle /sftp/* {
-		reverse_proxy sftpgo:2022
-	}
-
-  handle /webdav/* {
-		reverse_proxy sftpgo:10080
-	}
-
-  handle {
-    reverse_proxy sftpgo:8080
-  }
+  reverse_proxy sftpgo:8080
 }
 
-portainer.cloud.local {
+sftpgo.cloud.local:22 {
+  reverse_proxy sftpgo:2022
+}
+
+sftpgo.cloud.local:8080 {
+  tls internal
+  reverse_proxy sftpgo:10080
+}
+
+portainer.cloud.local:80 {
   tls internal
 	reverse_proxy portainer:9000
 }
