@@ -44,19 +44,26 @@ sudo -v ; curl https://rclone.org/install.sh | sudo bash
 
 1. rename all `filename.example` files to `filename` and set all required values.
 
-2. start containers
+2. create folders and permissions for bind mount
+
+```bash
+mkdir sftpgo sftpgo/data sftpgo/config
+chown -R 1000:1000 sftpgo sftpgo/data sftpgo/config
+```
+
+3. start containers
 
 ```bash
 docker-compose up -d
 ```
 
-3. setup rclone backup
+4. setup rclone backup
 
 ```bash
 rclone config
 ```
 
-4. add backup cronjob
+5. add backup cronjob
 
 ```bash
 crontab -e
