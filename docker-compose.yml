@@ -5,7 +5,7 @@ services:
     image: drakkan/sftpgo:v2.4.2
     restart: always
     env_file:
-      - ./sftpgo/.env
+      - ./.env
     ports:
       # http
       - 8080
@@ -20,6 +20,8 @@ services:
   portainer:
     image: portainer/portainer-ce:2.16.2
     restart: always
+    env_file:
+      - ./.env
     volumes:
       - portainer_data:/data
       # provide os information for portainer
@@ -31,6 +33,8 @@ services:
   caddy:
     image: caddy:2.6.2
     restart: always
+    env_file:
+      - ./.env
     ports:
       - 443:443
     volumes:
@@ -41,6 +45,8 @@ services:
   coredns:
     image: coredns/coredns:1.9.4
     restart: always
+    env_file:
+      - ./.env
     # set config path
     command: ['-conf', '/etc/coredns/Corefile']
     ports:
