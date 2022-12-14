@@ -2,9 +2,14 @@
   debug
 }
 
-ocis.cloud.local {
+sftpgo.cloud.local {
   tls internal
-	reverse_proxy ocis:9200
+  reverse_proxy sftpgo:8080
+}
+
+webdavgo.cloud.local {
+  tls internal
+  reverse_proxy sftpgo:10080
 }
 
 portainer.cloud.local {
