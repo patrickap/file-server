@@ -5,7 +5,7 @@
 sftpgo.cloud.local {
   tls internal
 
-  handle_path /webdav {
+  handle_path /webdav/* {
     reverse_proxy sftpgo:10080
   }
 
