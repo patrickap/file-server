@@ -7,11 +7,11 @@ sftpgo.cloud.local {
 	reverse_proxy sftpgo:8080
 }
 
-sftpgo.cloud.local/sftp* {
+sftpgo.cloud.local:2022 {
 	reverse_proxy sftpgo:2022
 }
 
-sftpgo.cloud.local/webdav* {
+sftpgo.cloud.local:10080 {
   tls internal
 	reverse_proxy sftpgo:10080
 }
