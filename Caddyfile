@@ -2,15 +2,6 @@
   debug
 }
 
-# FIXME: do not use in production
-# this workaround is currently needed
-# for some services to connect
-:443 {
-  tls internal {
-    on_demand
-  }
-}
-
 sftpgo.cloud.local {
   tls internal
   reverse_proxy /webdav* sftpgo:10080
