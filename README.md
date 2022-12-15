@@ -47,8 +47,11 @@ sudo -v ; curl https://rclone.org/install.sh | sudo bash
 2. create folders and permissions for bind mount
 
 ```bash
-mkdir sftpgo sftpgo/data sftpgo/config
-chown -R 1000:1000 sftpgo sftpgo/data sftpgo/config
+mkdir -p sftpgo/config sftpgo/data
+chown -R 1000:1000 sftpgo
+
+mkdir -p ocis/config ocis/data
+chown -R 1000:1000 ocis
 ```
 
 3. start containers
