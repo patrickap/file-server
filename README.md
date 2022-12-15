@@ -42,16 +42,12 @@ newgrp docker
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
 ```
 
-1. rename all `filename.example` files to `filename` and set all required values.
+1. remove the `*.example` file postfix and set the required values.
 
-2. create folders and permissions for bind mount
+2. set correct folder permissions for bind mount
 
 ```bash
-mkdir -p sftpgo/config sftpgo/data
-chown -R 1000:1000 sftpgo
-
-mkdir -p ocis/config ocis/data
-chown -R 1000:1000 ocis
+chown -R 1000:1000 server
 ```
 
 3. start containers
