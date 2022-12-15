@@ -42,7 +42,7 @@ newgrp docker
 sudo apt-get install rsync
 ```
 
-1. set `<HOST_IP>` in `db.cloud.lan`.
+1. set `<HOST_IP>` in `db.cloud.local`.
 
 2. set folder permissions for bind mount
 

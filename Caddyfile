@@ -2,17 +2,17 @@
   debug
 }
 
-portainer.cloud.lan {
+portainer.cloud.local {
   tls internal
 	reverse_proxy portainer:9000
 }
 
-sftpgo.cloud.lan {
+sftpgo.cloud.local {
   tls internal
   reverse_proxy sftpgo:9200
 }
 
-webdav.sftpgo.cloud.lan {
+webdav.sftpgo.cloud.local {
   tls internal
   reverse_proxy sftpgo:9400
 }

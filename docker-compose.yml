@@ -11,7 +11,7 @@ services:
       - 53:53/udp
     volumes:
       - ./Corefile:/etc/coredns/Corefile:ro
-      - ./db.cloud.lan:/db.cloud.lan:ro
+      - ./db.cloud.local:/db.cloud.local:ro
 
   caddy:
     image: caddy:2.6.2

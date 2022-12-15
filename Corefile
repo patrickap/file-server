@@ -1,5 +1,5 @@
-cloud.lan {
-    file db.cloud.lan
+cloud.local {
+    file db.cloud.local
     log
 		health
     errors
