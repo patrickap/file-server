@@ -8,11 +8,11 @@ services:
       - ./.env
     ports:
       # http
-      - 8080
+      - 8080:8080
       # sftp
       - 2022:2022
       # webdav
-      - 10080
+      - 10080:10080
     volumes:
       - ./server/config:/var/lib/sftpgo
       - ./server/data:/srv/sftpgo
@@ -28,7 +28,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - 9000
+      - 9000:9000
 
   caddy:
     image: caddy:2.6.2
