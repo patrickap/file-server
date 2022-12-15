@@ -38,13 +38,13 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 
-# install rclone
-sudo -v ; curl https://rclone.org/install.sh | sudo bash
+# install rsync
+sudo apt-get install rsync
 ```
 
-1. remove the `*.example` file postfix and set the required values.
+1. set `<HOST_IP>` in `db.cloud.lan`.
 
-2. set correct folder permissions for bind mount
+2. set folder permissions for bind mount
 
 ```bash
 chown -R 1000:1000 server
@@ -56,10 +56,10 @@ chown -R 1000:1000 server
 docker-compose up -d
 ```
 
-4. setup rclone backup
+4. setup rsync backup
 
 ```bash
-rclone config
+coming soon...
 ```
 
 5. add backup cronjob
@@ -67,6 +67,6 @@ rclone config
 ```bash
 crontab -e
 
-# backup data every day at 3am using rclone
-0 3 * * * (rclone copy <config_name>:<remote_path> <local_path>)
+# backup data every day at 3am
+0 3 * * * (coming soon...)
 ```

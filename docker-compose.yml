@@ -1,52 +1,9 @@
 version: '3.7'
 
 services:
-  sftpgo:
-    image: drakkan/sftpgo:v2.4.2
-    restart: always
-    env_file:
-      - ./.env
-    ports:
-      # http
-      - 8080:8080
-      # sftp
-      - 2022:2022
-      # webdav
-      - 10080:10080
-    volumes:
-      - ./server/config:/var/lib/sftpgo
-      - ./server/data:/srv/sftpgo
-
-  portainer:
-    image: portainer/portainer-ce:2.16.2
-    restart: always
-    env_file:
-      - ./.env
-    volumes:
-      - portainer_data:/data
-      # provide os information for portainer
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - 9000:9000
-
-  caddy:
-    image: caddy:2.6.2
-    restart: always
-    env_file:
-      - ./.env
-    ports:
-      - 443:443
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_config:/config
-      - caddy_data:/data
-
   coredns:
     image: coredns/coredns:1.9.4
     restart: always
-    env_file:
-      - ./.env
     # set config path
     command: ['-conf', '/etc/coredns/Corefile']
     ports:
@@ -54,9 +11,43 @@ services:
       - 53:53/udp
     volumes:
       - ./Corefile:/etc/coredns/Corefile:ro
-      - ./db.cloud.local:/db.cloud.local:ro
+      - ./db.cloud.lan:/db.cloud.lan:ro
+
+  caddy:
+    image: caddy:2.6.2
+    restart: always
+    ports:
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_config:/config
+      - caddy_data:/data
+
+  portainer:
+    image: portainer/portainer-ce:2.16.2
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - portainer_data:/data
+      # provide os information for portainer
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  sftpgo:
+    image: drakkan/sftpgo:v2.4.2
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 9200:9200
+      - 9400:9400
+      - 9600:9600
+    volumes:
+      - ./server/config:/var/lib/sftpgo
+      - ./server/data:/srv/sftpgo
 
 volumes:
-  portainer_data:
   caddy_config:
   caddy_data:
+  portainer_data:

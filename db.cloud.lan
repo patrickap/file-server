@@ -1,0 +1,12 @@
+$TTL    3600
+$ORIGIN cloud.lan.
+@                    IN SOA ns.cloud.lan. contact.cloud.lan. (
+                                           2022010101 ; serial
+                                           1d         ; refresh
+                                           2h         ; retry
+                                           4w         ; expire
+                                           1h         ; nxdomain ttl
+                                          )
+                     IN NS  ns.cloud.lan.
+@                    IN A   <HOST_IP>
+*                    IN A   <HOST_IP>
