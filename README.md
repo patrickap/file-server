@@ -47,7 +47,7 @@ sudo apt-get install rsync
 2. start containers
 
 ```bash
-sh start.sh
+bash start.sh
 ```
 
 3. setup rsync backup

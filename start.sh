@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # load env
 set -a
