@@ -4,6 +4,8 @@ services:
   coredns:
     image: coredns/coredns:1.9.4
     restart: always
+    env_file:
+      - ./.env
     # set config path
     command: ['-conf', '/etc/coredns/Corefile']
     ports:
@@ -16,20 +18,24 @@ services:
   caddy:
     image: caddy:2.6.2
     restart: always
+    env_file:
+      - ./.env
     ports:
       - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_config:/config
-      - caddy_data:/data
+      # - caddy_data:/data
+      # - caddy_config:/config
 
   portainer:
     image: portainer/portainer-ce:2.16.2
     restart: always
+    env_file:
+      - ./.env
     ports:
       - 9000:9000
     volumes:
-      - portainer_data:/data
+      # - portainer_data:/data
       # provide os information for portainer
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -44,20 +50,16 @@ services:
       - 9400:9400
       - 9600:9600
     volumes:
-      - ./sftpgo_config:/var/lib/sftpgo
-      - ./data/sftpgo/:/srv/sftpgo
+      - ./data/sftpgo/:/srv/sftpgo/data
+      # - ./sftpgo_config:/var/lib/sftpgo
 
   radicale:
     image: tomsquest/docker-radicale:3.1.8.0
     restart: always
+    env_file:
+      - ./.env
     init: true
     ports:
       - 9800:5232
     volumes:
       - ./data/radicale:/data/collections/collection-root
-
-volumes:
-  caddy_config:
-  caddy_data:
-  portainer_data:
-  sftpgo_config:

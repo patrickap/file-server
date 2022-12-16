@@ -42,28 +42,21 @@ newgrp docker
 sudo apt-get install rsync
 ```
 
-1. set `<HOST_IP>` in `db.cloud.local`.
+1. create and set values inside `.env` file
 
-2. set folder permissions for bind mount
-
-```bash
-chown -R 1000:1000 server/sftpgo
-chown -R 2999:2999 server/radicale
-```
-
-3. start containers
+2. start containers
 
 ```bash
-docker-compose up -d
+sh start.sh
 ```
 
-4. setup rsync backup
+3. setup rsync backup
 
 ```bash
 coming soon...
 ```
 
-5. add backup cronjob
+4. add backup cronjob
 
 ```bash
 crontab -e
