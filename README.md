@@ -47,7 +47,8 @@ sudo apt-get install rsync
 2. set folder permissions for bind mount
 
 ```bash
-chown -R 1000:1000 server
+chown -R 1000:1000 server/sftpgo
+chown -R 2999:2999 server/radicale
 ```
 
 3. start containers

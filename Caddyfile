@@ -16,3 +16,8 @@ webdav.sftpgo.cloud.local {
   tls internal
   reverse_proxy sftpgo:9400
 }
+
+radicale.cloud.local {
+  tls internal
+  reverse_proxy radicale:5232
+}

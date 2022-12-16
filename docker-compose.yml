@@ -44,10 +44,20 @@ services:
       - 9400:9400
       - 9600:9600
     volumes:
-      - ./server/config:/var/lib/sftpgo
-      - ./server/data:/srv/sftpgo
+      - ./sftpgo_config:/var/lib/sftpgo
+      - ./data/sftpgo/:/srv/sftpgo
+
+  radicale:
+    image: tomsquest/docker-radicale:3.1.8.0
+    restart: always
+    init: true
+    ports:
+      - 9800:5232
+    volumes:
+      - ./data/radicale:/data/collections/collection-root
 
 volumes:
   caddy_config:
   caddy_data:
   portainer_data:
+  sftpgo_config:
