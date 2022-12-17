@@ -53,16 +53,16 @@ services:
       - sftpgo_data:/srv/sftpgo/data
       - sftpgo_config:/var/lib/sftpgo
 
-  radicale:
-    image: tomsquest/docker-radicale:3.1.8.0
+  baikal:
+    image: ckulka/baikal:0.9.3
     restart: always
     env_file:
       - ./.env
-    init: true
     ports:
-      - 9800:5232
+      - 9800:80
     volumes:
-      - radicale_data:/data/collections/collection-root
+      - baikal_data:/var/www/baikal/Specific
+      - baikal_config:/var/www/baikal/config
 
 volumes:
   caddy_data:
@@ -70,4 +70,5 @@ volumes:
   portainer_data:
   sftpgo_data:
   sftpgo_config:
-  radicale_data:
+  baikal_data:
+  baikal_config:
