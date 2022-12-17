@@ -50,7 +50,7 @@ services:
       - 9400:9400
       - 9600:9600
     volumes:
-      - sftpgo_data/:/srv/sftpgo/data
+      - sftpgo_data:/srv/sftpgo/data
       - sftpgo_config:/var/lib/sftpgo
 
   radicale:
