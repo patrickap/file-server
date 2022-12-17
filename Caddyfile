@@ -21,3 +21,8 @@ radicale.cloud.local {
   tls internal
   reverse_proxy radicale:5232
 }
+
+certificate.cloud.local {
+  root * /data/caddy/pki/authorities/local/
+  file_server browse
+}
