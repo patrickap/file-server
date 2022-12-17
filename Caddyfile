@@ -23,6 +23,7 @@ baikal.cloud.local {
 }
 
 certificate.cloud.local {
+  # TODO: optimize access
   root * /data/caddy/pki/authorities/local/
   file_server browse
 }
