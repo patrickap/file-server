@@ -49,12 +49,14 @@ services:
     volumes:
       - sftpgo_data:/srv/sftpgo/data
       - sftpgo_config:/var/lib/sftpgo
-      # share external data with sftpgo which can be assigned
-      # as a virtual folder to each individual user
+      # share external radicale data with sftpgo which can be
+      # assigned as a virtual folder to each individual user
       # absolute path: /srv/sftpgo/external_data/radicale/<username>
       # virtual path: /Radicale
       - radicale_data:/srv/sftpgo/external_data/radicale
 
+  # TODO: enable radicale authentication for better security
+  # by default nothing is checked
   radicale:
     image: tomsquest/docker-radicale:3.1.8.0
     restart: always
@@ -64,10 +66,10 @@ services:
     volumes:
       - radicale_data:/data/collections/collection-root
 
-  # TODO: add docker-volume-backup
+  # TODO: docker volume backup strategy
   # https://github.com/jareware/docker-volume-backup
-  # or add volumerize
   # https://github.com/blacklabelops/volumerize
+  # or something else using rsync incremental backups?
 
 volumes:
   caddy_data:
