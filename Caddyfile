@@ -4,7 +4,7 @@
 
 portainer.self-cloud.com {
   tls internal
-	reverse_proxy portainer:9000
+  reverse_proxy portainer:9000
 }
 
 sftpgo.self-cloud.com {

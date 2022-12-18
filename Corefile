@@ -1,13 +1,13 @@
 self-cloud.com {
-    file db.self-cloud.com
-    log
-		health
-    errors
+  file db.self-cloud.com
+  log
+  health
+  errors
 }
 
 . {
-    log
-		health
-    errors
-    forward . 8.8.8.8
+  log
+  health
+  errors
+  forward . 8.8.8.8
 }
