@@ -50,14 +50,14 @@ services:
       - sftpgo_data:/srv/sftpgo/data
       - sftpgo_config:/var/lib/sftpgo
 
-  baikal:
-    image: ckulka/baikal:0.9.3
+  radicale:
+    image: tomsquest/docker-radicale:3.1.8.0
     restart: always
+    init: true
     ports:
-      - 9800:80
+      - 9800:5232
     volumes:
-      - baikal_data:/var/www/baikal/Specific
-      - baikal_config:/var/www/baikal/config
+      - radicale_data:/data/collections/collection-root
 
   # TODO: add docker-volume-backup
   # https://github.com/jareware/docker-volume-backup
@@ -70,5 +70,4 @@ volumes:
   portainer_data:
   sftpgo_data:
   sftpgo_config:
-  baikal_data:
-  baikal_config:
+  radicale_data:

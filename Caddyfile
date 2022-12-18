@@ -17,9 +17,9 @@ webdav.sftpgo.self-cloud.com {
   reverse_proxy sftpgo:9400
 }
 
-baikal.self-cloud.com {
+radicale.self-cloud.com {
   tls internal
-  reverse_proxy baikal:80
+  reverse_proxy radicale:5232
 }
 
 certificate.self-cloud.com {
