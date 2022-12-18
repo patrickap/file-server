@@ -49,6 +49,11 @@ services:
     volumes:
       - sftpgo_data:/srv/sftpgo/data
       - sftpgo_config:/var/lib/sftpgo
+      # share external data with sftpgo which can be assigned
+      # as a virtual folder to each individual user
+      # absolute path: /srv/sftpgo/external_data/radicale/<username>
+      # virtual path: /Radicale
+      - radicale_data:/srv/sftpgo/external_data/radicale
 
   radicale:
     image: tomsquest/docker-radicale:3.1.8.0
