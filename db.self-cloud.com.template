@@ -1,4 +1,4 @@
-$TTL    3600
+$TTL    300
 $ORIGIN self-cloud.com.
 @                       IN SOA ns.self-cloud.com. contact.self-cloud.com. (
                                                    2022010101 ; serial
