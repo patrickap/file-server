@@ -2,27 +2,27 @@
   debug
 }
 
-portainer.cloud.local {
+portainer.self-cloud.com {
   tls internal
 	reverse_proxy portainer:9000
 }
 
-sftpgo.cloud.local {
+sftpgo.self-cloud.com {
   tls internal
   reverse_proxy sftpgo:9200
 }
 
-webdav.sftpgo.cloud.local {
+webdav.sftpgo.self-cloud.com {
   tls internal
   reverse_proxy sftpgo:9400
 }
 
-baikal.cloud.local {
+baikal.self-cloud.com {
   tls internal
   reverse_proxy baikal:80
 }
 
-certificate.cloud.local {
+certificate.self-cloud.com {
   # TODO: optimize access
   root * /data/caddy/pki/authorities/local/
   file_server browse

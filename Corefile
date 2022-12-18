@@ -1,5 +1,5 @@
-cloud.local {
-    file db.cloud.local
+self-cloud.com {
+    file db.self-cloud.com
     log
 		health
     errors

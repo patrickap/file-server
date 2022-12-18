@@ -5,8 +5,8 @@ set -a
 source .env
 set +a
 
-# create dns zone for cloud.local
-envsubst '${HOST_IP}' < db.cloud.local.template > db.cloud.local
+# create dns zone for self-cloud.com
+envsubst '${HOST_IP}' < db.self-cloud.com.template > db.self-cloud.com
 
 # start containers
 docker compose up -d
