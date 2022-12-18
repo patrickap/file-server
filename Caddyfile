@@ -24,6 +24,7 @@ baikal.self-cloud.com {
 
 certificate.self-cloud.com {
   # TODO: optimize access
+  tls internal
   root * /data/caddy/pki/authorities/local/
   file_server browse
 }
