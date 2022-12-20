@@ -91,9 +91,9 @@ services:
       # TODO: set correct backup path here
       - ./backup:/archive
       # volumes to backup
-      - sftpgo-data:/sftpgo-data:ro
-      - sftpgo-config:/sftpgo-config:ro
-      - radicale-data:/radicale-data:ro
+      - sftpgo-data:/backup/sftpgo-data:ro
+      - sftpgo-config:/backup/sftpgo-config:ro
+      - radicale-data:/backup/radicale-data:ro
       # provide host information
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
