@@ -22,8 +22,8 @@ services:
       - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
+      - caddy-data:/data
+      - caddy-config:/config
 
   portainer:
     image: portainer/portainer-ce:2.16.2
@@ -31,7 +31,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - portainer_data:/data
+      - portainer-data:/data
       # provide os information for portainer
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -51,13 +51,11 @@ services:
       - 9600:9600
     volumes:
       - ./sftpgo.json:/etc/sftpgo/init/sftpgo.json:ro
-      - sftpgo_data:/srv/sftpgo/data
-      - sftpgo_config:/var/lib/sftpgo
+      - sftpgo-data:/srv/sftpgo/data
+      - sftpgo-config:/var/lib/sftpgo
       # share external radicale data with sftpgo which can be
       # assigned as a virtual folder to each individual user
-      # absolute path: /srv/sftpgo/external_data/radicale/<username>
-      # virtual path: /Radicale
-      - radicale_data:/srv/sftpgo/external_data/radicale
+      - radicale-data:/srv/sftpgo/external/radicale
 
   # TODO: enable radicale authentication for better security
   # by default nothing is checked
@@ -68,7 +66,7 @@ services:
     ports:
       - 9800:5232
     volumes:
-      - radicale_data:/data/collections/collection-root
+      - radicale-data:/data/collections/collection-root
 
   # TODO: docker volume backup strategy
   # https://github.com/jareware/docker-volume-backup
@@ -76,9 +74,9 @@ services:
   # or something else using rsync incremental backups?
 
 volumes:
-  caddy_data:
-  caddy_config:
-  portainer_data:
-  sftpgo_data:
-  sftpgo_config:
-  radicale_data:
+  caddy-data:
+  caddy-config:
+  portainer-data:
+  sftpgo-data:
+  sftpgo-config:
+  radicale-data:
