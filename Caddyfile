@@ -23,7 +23,6 @@ radicale.{$HOST_NAME} {
 }
 
 certificate.{$HOST_NAME} {
-  # TODO: only provide root.crt as file download
   tls internal
   root * /data/caddy/pki/authorities/local/
   file_server browse

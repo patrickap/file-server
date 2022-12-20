@@ -43,6 +43,8 @@ services:
     container_name: sftpgo
     image: drakkan/sftpgo:v2.4.2
     restart: always
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     environment:
       # https://github.com/drakkan/sftpgo/blob/main/sftpgo.json
       - SFTPGO_HTTPD__BINDINGS__0__PORT=9200
@@ -57,26 +59,44 @@ services:
       - ./sftpgo.json:/etc/sftpgo/init/sftpgo.json:ro
       - sftpgo-data:/srv/sftpgo/data
       - sftpgo-config:/var/lib/sftpgo
-      # share external data which can be viewed
+      # provide external volumes which can be viewed
       # as a virtual folder if configured
       - radicale-data:/srv/sftpgo/external/radicale
 
-  # TODO: enable radicale authentication for better security
+  # TODO: configure radicale authentication
   # by default nothing is checked
   radicale:
     container_name: radicale
     image: tomsquest/docker-radicale:3.1.8.0
     restart: always
     init: true
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     ports:
       - 9800:5232
     volumes:
       - radicale-data:/data/collections/collection-root
 
-  # TODO: docker volume backup strategy
-  # https://github.com/jareware/docker-volume-backup
-  # https://github.com/blacklabelops/volumerize
-  # or something else using rsync incremental backups?
+  backup:
+    image: offen/docker-volume-backup:v2.22.2
+    container_name: backup
+    restart: always
+    environment:
+      # https://github.com/offen/docker-volume-backup#configuration-reference
+      - BACKUP_FILENAME=%Y-%m-%d_%H.%M.%S.tar.gz
+      - BACKUP_LATEST_SYMLINK=main.tar.gz
+      - BACKUP_RETENTION_DAYS=7
+      - BACKUP_CRON_EXPRESSION=0 3 * * *
+    volumes:
+      # TODO: set correct backup path here
+      - ./backup:/archive
+      # volumes to backup
+      - sftpgo-data:/sftpgo-data:ro
+      - sftpgo-config:/sftpgo-config:ro
+      - radicale-data:/radicale-data:ro
+      # provide host information
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
   caddy-data:
