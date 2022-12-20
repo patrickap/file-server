@@ -1,5 +1,5 @@
 {$HOST_NAME} {
-  file .zone
+  file db.domain.tld
   log
   health
   errors
