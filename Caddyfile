@@ -2,27 +2,27 @@
   debug
 }
 
-portainer.self-cloud.com {
+portainer.{$HOST_NAME} {
   tls internal
   reverse_proxy portainer:9000
 }
 
-sftpgo.self-cloud.com {
+sftpgo.{$HOST_NAME} {
   tls internal
   reverse_proxy sftpgo:9200
 }
 
-webdav.sftpgo.self-cloud.com {
+webdav.sftpgo.{$HOST_NAME} {
   tls internal
   reverse_proxy sftpgo:9400
 }
 
-radicale.self-cloud.com {
+radicale.{$HOST_NAME} {
   tls internal
   reverse_proxy radicale:5232
 }
 
-certificate.self-cloud.com {
+certificate.{$HOST_NAME} {
   # TODO: only provide root.crt as file download
   tls internal
   root * /data/caddy/pki/authorities/local/

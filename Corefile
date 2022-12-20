@@ -1,5 +1,5 @@
-self-cloud.com {
-  file db.self-cloud.com
+{$HOST_NAME} {
+  file .zone
   log
   health
   errors

@@ -1,4 +1,3 @@
-data/
-.DS_Store
 .env
-db.self-cloud.com
+.zone
+.DS_Store

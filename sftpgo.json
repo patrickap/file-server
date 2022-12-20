@@ -1,0 +1,14 @@
+{
+  "groups": [
+    {
+      "name": "RadicaleGroup",
+      "virtual_folders": [
+        {
+          "name": "RadicaleFolder",
+          "mapped_path": "/srv/sftpgo/external_data/radicale/%username%",
+          "virtual_path": "/Radicale"
+        }
+      ]
+    }
+  ]
+}

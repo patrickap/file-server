@@ -1,0 +1,12 @@
+$TTL    300
+$ORIGIN ${HOST_NAME}.
+@                     IN SOA ns.${HOST_NAME}. contact.${HOST_NAME}. (
+                                               2022010101 ; serial
+                                               1d         ; refresh
+                                               2h         ; retry
+                                               4w         ; expire
+                                               1h         ; nxdomain ttl
+                                              )
+                      IN NS  ns.${HOST_NAME}.
+@                     IN A   ${HOST_IP}
+*                     IN A   ${HOST_IP}
