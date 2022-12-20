@@ -4,6 +4,7 @@ services:
   coredns:
     image: coredns/coredns:1.9.4
     restart: always
+    env_file: ./.env
     # set config path
     command: ['-conf', '/etc/coredns/Corefile']
     ports:
@@ -16,6 +17,7 @@ services:
   caddy:
     image: caddy:2.6.2
     restart: always
+    env_file: ./.env
     ports:
       - 443:443
     volumes:
