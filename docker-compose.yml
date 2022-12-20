@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   coredns:
+    container_name: coredns
     image: coredns/coredns:1.9.4
     restart: always
     env_file: ./.env
@@ -15,6 +16,7 @@ services:
       - ./.zone:/.zone:ro
 
   caddy:
+    container_name: caddy
     image: caddy:2.6.2
     restart: always
     env_file: ./.env
@@ -26,17 +28,19 @@ services:
       - caddy-config:/config
 
   portainer:
+    container_name: portainer
     image: portainer/portainer-ce:2.16.2
     restart: always
     ports:
       - 9000:9000
     volumes:
       - portainer-data:/data
-      # provide os information for portainer
+      # provide host information
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   sftpgo:
+    container_name: sftpgo
     image: drakkan/sftpgo:v2.4.2
     restart: always
     environment:
@@ -53,13 +57,14 @@ services:
       - ./sftpgo.json:/etc/sftpgo/init/sftpgo.json:ro
       - sftpgo-data:/srv/sftpgo/data
       - sftpgo-config:/var/lib/sftpgo
-      # share external radicale data with sftpgo which can be
-      # assigned as a virtual folder to each individual user
+      # share external data which can be viewed
+      # as a virtual folder if configured
       - radicale-data:/srv/sftpgo/external/radicale
 
   # TODO: enable radicale authentication for better security
   # by default nothing is checked
   radicale:
+    container_name: radicale
     image: tomsquest/docker-radicale:3.1.8.0
     restart: always
     init: true
