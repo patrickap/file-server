@@ -1,6 +1,6 @@
-{
-  debug
-}
+# {
+#   debug
+# }
 
 portainer.{$HOST_NAME} {
   tls internal
