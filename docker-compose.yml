@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   coredns:
-    container_name: coredns
+    container_name: file-server-coredns
     image: coredns/coredns:1.9.4
     restart: always
     env_file: ./.env
@@ -16,7 +16,7 @@ services:
       - ./.zone:/.zone:ro
 
   caddy:
-    container_name: caddy
+    container_name: file-server-caddy
     image: caddy:2.6.2
     restart: always
     env_file: ./.env
@@ -28,7 +28,7 @@ services:
       - caddy-config:/config
 
   portainer:
-    container_name: portainer
+    container_name: file-server-portainer
     image: portainer/portainer-ce:2.16.2
     restart: always
     ports:
@@ -40,7 +40,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   sftpgo:
-    container_name: sftpgo
+    container_name: file-server-sftpgo
     image: drakkan/sftpgo:v2.4.2
     restart: always
     labels:
@@ -66,7 +66,7 @@ services:
   # TODO: configure radicale authentication
   # by default nothing is checked
   radicale:
-    container_name: radicale
+    container_name: file-server-radicale
     image: tomsquest/docker-radicale:3.1.8.0
     restart: always
     init: true
@@ -79,7 +79,7 @@ services:
 
   backup:
     image: offen/docker-volume-backup:v2.22.2
-    container_name: backup
+    container_name: file-server-backup
     restart: always
     environment:
       # https://github.com/offen/docker-volume-backup#configuration-reference
