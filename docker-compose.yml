@@ -90,6 +90,7 @@ services:
       - BACKUP_FILENAME=%Y-%m-%d_%H.%M.%S.tar.gz
       - BACKUP_LATEST_SYMLINK=main.tar.gz
       - BACKUP_RETENTION_DAYS=7
+      # backup at 03:00 every day
       - BACKUP_CRON_EXPRESSION=0 3 * * *
     volumes:
       # TODO: set correct backup path here
