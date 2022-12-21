@@ -8,14 +8,30 @@ Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 
 2. create an `.env` file and set the corresponding values
 
-3. start the containers
+3. set target for backups in `docker-compose.yml`
+
+```yml
+...
+backup:
+  ...
+  volumes:
+    - ./<path_to_target>:/archive
+    - ...
+  ...
+...
+```
+
+4. enable the local dns server on the router by entering the host ip
+
+5. start the containers
 
 ```bash
 bash start.sh
 ```
 
-4. create manual backups (optional)
+6. backups are created automatically
 
 ```bash
+# create manual backup
 docker exec file-server-backup backup
 ```
