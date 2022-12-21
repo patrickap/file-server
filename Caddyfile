@@ -19,7 +19,7 @@ webdav.sftpgo.{$HOST_NAME} {
 
 radicale.{$HOST_NAME} {
   tls internal
-  reverse_proxy radicale:5232
+  reverse_proxy radicale:9800
 }
 
 certificate.{$HOST_NAME} {
