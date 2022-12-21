@@ -92,7 +92,6 @@ services:
       - ./backup:/archive
       # volumes to backup
       - sftpgo-data:/backup/sftpgo-data:ro
-      - sftpgo-config:/backup/sftpgo-config:ro
       - radicale-data:/backup/radicale-data:ro
       # provide host information
       - /etc/localtime:/etc/localtime:ro
