@@ -5,7 +5,7 @@
       "virtual_folders": [
         {
           "name": "RadicaleFolder",
-          "mapped_path": "/srv/sftpgo/external/radicale/%username%",
+          "mapped_path": "/srv/sftpgo/external/radicale/collections/collection-root/%username%",
           "virtual_path": "/Radicale"
         }
       ]

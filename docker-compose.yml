@@ -43,7 +43,11 @@ services:
     container_name: file-server-sftpgo
     image: drakkan/sftpgo:v2.4.2
     restart: always
+    group_add:
+      # radicale group for volume access
+      - '2999'
     labels:
+      # stop container during backup
       - docker-volume-backup.stop-during-backup=true
     environment:
       # https://github.com/drakkan/sftpgo/blob/main/sftpgo.json
@@ -59,8 +63,7 @@ services:
       - ./sftpgo.json:/etc/sftpgo/init/sftpgo.json:ro
       - sftpgo-data:/srv/sftpgo/data
       - sftpgo-config:/var/lib/sftpgo
-      # provide external volumes which can be viewed
-      # as a virtual folder if configured
+      # provide external volumes as virtual folder
       - radicale-data:/srv/sftpgo/external/radicale
 
   radicale:
@@ -69,12 +72,13 @@ services:
     restart: always
     init: true
     labels:
+      # stop container during backup
       - docker-volume-backup.stop-during-backup=true
     ports:
       - 9800:9800
     volumes:
       - ./radicale.config:/config/config:ro
-      - radicale-data:/data/collections/collection-root
+      - radicale-data:/data
 
   backup:
     image: offen/docker-volume-backup:v2.22.2
