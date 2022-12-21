@@ -63,7 +63,6 @@ services:
       # as a virtual folder if configured
       - radicale-data:/srv/sftpgo/external/radicale
 
-  # TODO: configure radicale authentication
   radicale:
     container_name: file-server-radicale
     image: tomsquest/docker-radicale:3.1.8.0
@@ -72,8 +71,9 @@ services:
     labels:
       - docker-volume-backup.stop-during-backup=true
     ports:
-      - 9800:5232
+      - 9800:9800
     volumes:
+      - ./radicale.config:/config/config:ro
       - radicale-data:/data/collections/collection-root
 
   backup:
