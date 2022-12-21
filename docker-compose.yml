@@ -64,7 +64,6 @@ services:
       - radicale-data:/srv/sftpgo/external/radicale
 
   # TODO: configure radicale authentication
-  # by default nothing is checked
   radicale:
     container_name: file-server-radicale
     image: tomsquest/docker-radicale:3.1.8.0
