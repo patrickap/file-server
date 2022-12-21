@@ -2,34 +2,27 @@ version: '3.7'
 
 services:
   coredns:
-    container_name: file-server-coredns
-    image: coredns/coredns:1.9.4
+    build: ./coredns
     restart: always
     env_file: ./.env
-    # set config path
-    command: ['-conf', '/etc/coredns/Corefile']
     ports:
       - 53:53
       - 53:53/udp
     volumes:
-      - ./Corefile:/etc/coredns/Corefile:ro
-      - ./.zone:/.zone:ro
+      - coredns-config:/config
 
   caddy:
-    container_name: file-server-caddy
-    image: caddy:2.6.2
+    build: ./caddy
     restart: always
     env_file: ./.env
     ports:
       - 443:443
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
       - caddy-config:/config
 
   portainer:
-    container_name: file-server-portainer
-    image: portainer/portainer-ce:2.16.2
+    build: ./portainer
     restart: always
     ports:
       - 9000:9000
@@ -40,8 +33,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   sftpgo:
-    container_name: file-server-sftpgo
-    image: drakkan/sftpgo:v2.4.2
+    build: ./sftpgo
     restart: always
     group_add:
       # radicale group for volume access
@@ -49,31 +41,18 @@ services:
     labels:
       # stop container during backup
       - docker-volume-backup.stop-during-backup=true
-    environment:
-      # https://github.com/drakkan/sftpgo/blob/main/sftpgo.json
-      - SFTPGO_HTTPD__BINDINGS__0__PORT=9200
-      - SFTPGO_WEBDAVD__BINDINGS__0__PORT=9400
-      - SFTPGO_SFTPD__BINDINGS__0__PORT=9600
-      - SFTPGO_LOADDATA_FROM=/etc/sftpgo/init/sftpgo.json
     ports:
       - 9200:9200
       - 9400:9400
       - 9600:9600
-    healthcheck:
-      test: curl --fail http://localhost:9200/healthz || exit 1
-      interval: 60s
-      timeout: 10s
-      retries: 3
     volumes:
-      - ./sftpgo.json:/etc/sftpgo/init/sftpgo.json:ro
       - sftpgo-data:/srv/sftpgo/data
       - sftpgo-config:/var/lib/sftpgo
       # provide external volumes as virtual folder
       - radicale-data:/srv/sftpgo/external/radicale
 
   radicale:
-    container_name: file-server-radicale
-    image: tomsquest/docker-radicale:3.1.8.0
+    build: ./radicale
     restart: always
     init: true
     labels:
@@ -81,30 +60,16 @@ services:
       - docker-volume-backup.stop-during-backup=true
     ports:
       - 9800:9800
-    healthcheck:
-      test: curl --fail http://localhost:9800 || exit 1
-      interval: 60s
-      timeout: 10s
-      retries: 3
     volumes:
-      - ./radicale.config:/config/config:ro
       - radicale-data:/data
       - radicale-config:/config
 
   backup:
-    image: offen/docker-volume-backup:v2.22.2
-    container_name: file-server-backup
+    build: ./volume-backup
     restart: always
-    environment:
-      # https://github.com/offen/docker-volume-backup#configuration-reference
-      - BACKUP_FILENAME=%Y-%m-%d_%H.%M.%S.tar.gz
-      - BACKUP_LATEST_SYMLINK=main.tar.gz
-      - BACKUP_RETENTION_DAYS=7
-      # backup at 03:00 every day
-      - BACKUP_CRON_EXPRESSION=0 3 * * *
     volumes:
       # TODO: set correct backup path here
-      - ./backup:/archive
+      # - ./backup:/archive
       # volumes to backup
       - sftpgo-data:/backup/sftpgo-data:ro
       - sftpgo-config:/backup/sftpgo-config:ro
@@ -115,6 +80,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
+  coredns-config:
   caddy-data:
   caddy-config:
   portainer-data:
