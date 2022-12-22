@@ -7,6 +7,7 @@ services:
       args:
         - HOST_IP=$HOST_IP
         - HOST_NAME=$HOST_NAME
+    init: true
     restart: always
     ports:
       - 53:53
@@ -20,6 +21,7 @@ services:
       args:
         - HOST_IP=$HOST_IP
         - HOST_NAME=$HOST_NAME
+    init: true
     restart: always
     ports:
       - 443:443
@@ -30,6 +32,7 @@ services:
   portainer:
     build:
       context: ./portainer
+    init: true
     restart: always
     ports:
       - 9000:9000
@@ -42,6 +45,7 @@ services:
   sftpgo:
     build:
       context: ./sftpgo
+    init: true
     restart: always
     labels:
       - docker-volume-backup.stop-during-backup=true
@@ -63,8 +67,8 @@ services:
         # needed for sftpgo the access the user folder
         - BUILD_UID=1000
         - BUILD_GID=1000
-    restart: always
     init: true
+    restart: always
     labels:
       - docker-volume-backup.stop-during-backup=true
     ports:
@@ -74,7 +78,9 @@ services:
       - radicale-config:/config
 
   backup:
-    build: ./volume-backup
+    build:
+      context: ./volume-backup
+    init: true
     restart: always
     volumes:
       # TODO: set correct backup path here
