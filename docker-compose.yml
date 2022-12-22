@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
   coredns:
-    env_file: ./.env
     build:
       context: ./coredns
       args:
@@ -16,7 +15,6 @@ services:
       - coredns-config:/config
 
   caddy:
-    env_file: ./.env
     build:
       context: ./caddy
       args:
@@ -30,7 +28,8 @@ services:
       - caddy-config:/config
 
   portainer:
-    build: ./portainer
+    build:
+      context: ./portainer
     restart: always
     ports:
       - 9000:9000
@@ -41,10 +40,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   sftpgo:
-    build: ./sftpgo
+    build:
+      context: ./sftpgo
     restart: always
     labels:
-      # stop container during backup
       - docker-volume-backup.stop-during-backup=true
     ports:
       - 9200:9200
@@ -67,7 +66,6 @@ services:
     restart: always
     init: true
     labels:
-      # stop container during backup
       - docker-volume-backup.stop-during-backup=true
     ports:
       - 9800:9800
