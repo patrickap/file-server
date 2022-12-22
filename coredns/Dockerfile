@@ -4,10 +4,10 @@ FROM alpine:latest
 ARG HOST_IP
 ARG HOST_NAME
 
-COPY ./db.zone.template /config/db.zone.template
+COPY ./db.zone.template /config/zones/db.zone.template
 
 # create dns zone from template
-RUN apk add gettext && envsubst '${HOST_IP} ${HOST_NAME}' < /config/db.zone.template > /config/db.${HOST_NAME}
+RUN apk add gettext && envsubst '${HOST_IP} ${HOST_NAME}' < /config/zones/db.zone.template > /config/zones/db.${HOST_NAME}
 
 # stage 1
 FROM coredns/coredns:1.9.4
