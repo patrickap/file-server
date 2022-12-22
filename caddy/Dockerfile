@@ -1,8 +1,9 @@
 FROM caddy:2.6.2
 
 ARG HOST_IP
-ENV HOST_IP=$HOST_IP
 ARG HOST_NAME
+
+ENV HOST_IP=$HOST_IP
 ENV HOST_NAME=$HOST_NAME
 
 COPY ./Caddyfile /etc/caddy/Caddyfile

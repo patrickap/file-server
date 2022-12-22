@@ -1,23 +1,27 @@
 FROM drakkan/sftpgo:v2.4.2
 
+ARG INIT_FILE="/etc/sftpgo/init.json"
+
 # https://github.com/drakkan/sftpgo/blob/main/sftpgo.json
 ENV SFTPGO_HTTPD__BINDINGS__0__PORT="9200"
 ENV SFTPGO_WEBDAVD__BINDINGS__0__PORT="9400"
 ENV SFTPGO_SFTPD__BINDINGS__0__PORT="9600"
-ARG SFTPGO_LOADDATA_FROM="/etc/sftpgo/init.json"
-ENV SFTPGO_LOADDATA_FROM=$SFTPGO_LOADDATA_FROM
+ENV SFTPGO_LOADDATA_FROM=$INIT_FILE
 
-COPY ./init.json $SFTPGO_LOADDATA_FROM
+COPY ./init.json $INIT_FILE
 
 # root user is temporary needed for installing packages
 USER root
+
 RUN  apt-get update && apt-get install -y curl
+
+# reset to default sftpgo user
 USER 1000:1000
 
 HEALTHCHECK  --interval=60s --timeout=10s --retries=3 \
   CMD curl --fail http://localhost:9200/healthz || exit 1
 
-# web interface
+# web ui
 EXPOSE 9200
 
 # webdav
