@@ -4,6 +4,9 @@ services:
   coredns:
     build:
       context: ./coredns
+      args:
+        - HOST_IP=$HOST_IP
+        - HOST_NAME=$HOST_NAME
     init: true
     restart: always
     ports:
@@ -15,6 +18,9 @@ services:
   caddy:
     build:
       context: ./caddy
+      args:
+        - HOST_IP=$HOST_IP
+        - HOST_NAME=$HOST_NAME
     init: true
     restart: always
     ports:
