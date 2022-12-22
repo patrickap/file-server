@@ -2,7 +2,9 @@
 FROM alpine:latest
 
 ARG HOST_IP
+ENV HOST_IP=$HOST_IP
 ARG HOST_NAME
+ENV HOST_NAME=$HOST_NAME
 
 COPY ./db.zone.template /config/zones/db.zone.template
 

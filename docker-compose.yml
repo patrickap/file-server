@@ -4,9 +4,6 @@ services:
   coredns:
     build:
       context: ./coredns
-      args:
-        - HOST_IP=$HOST_IP
-        - HOST_NAME=$HOST_NAME
     init: true
     restart: always
     ports:
@@ -18,9 +15,6 @@ services:
   caddy:
     build:
       context: ./caddy
-      args:
-        - HOST_IP=$HOST_IP
-        - HOST_NAME=$HOST_NAME
     init: true
     restart: always
     ports:
@@ -82,7 +76,7 @@ services:
     restart: always
     volumes:
       # TODO: set correct backup path here
-      # - ./path/to/target:/archive
+      # - /<path_to_target>:/archive
       # volumes to backup
       - sftpgo-data:/backup/sftpgo-data:ro
       - sftpgo-config:/backup/sftpgo-config:ro

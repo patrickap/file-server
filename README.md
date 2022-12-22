@@ -15,23 +15,23 @@ Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 backup:
   ...
   volumes:
-    - /path/to/target:/archive
+    - /<path_to_target>:/archive
     - ...
   ...
 ...
 ```
 
-4. enable the local dns server on the router by entering the host ip
+4. set up the local dns server on the router by entering the host ip
 
 5. start the containers
 
 ```bash
-bash start.sh
+docker compose up -d
 ```
 
-6. backups are created automatically
+6. backups are created automatically but manual backups are supported
 
 ```bash
 # create manual backup
-docker exec file-server-backup backup
+docker exec <backup_container_name> backup
 ```
