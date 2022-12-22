@@ -47,6 +47,9 @@ services:
       context: ./sftpgo
     init: true
     restart: always
+    group_add:
+      # add radical default group for accessing the volume
+      - '2999'
     labels:
       - docker-volume-backup.stop-during-backup=true
     ports:
@@ -62,11 +65,6 @@ services:
   radicale:
     build:
       context: ./radicale
-      args:
-        # reset uid and gid to default which is
-        # needed for sftpgo the access the user folder
-        - BUILD_UID=1000
-        - BUILD_GID=1000
     init: true
     restart: always
     labels:
