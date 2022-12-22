@@ -9,5 +9,5 @@ hosts = 0.0.0.0:9800
 [storage]
 filesystem_folder = /data/collections
 
-# [logging]
-# level = debug
+[logging]
+level = info
