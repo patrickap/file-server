@@ -2,9 +2,13 @@ version: '3.7'
 
 services:
   coredns:
-    build: ./coredns
-    restart: always
     env_file: ./.env
+    build:
+      context: ./coredns
+      args:
+        - HOST_IP=$HOST_IP
+        - HOST_NAME=$HOST_NAME
+    restart: always
     ports:
       - 53:53
       - 53:53/udp
@@ -12,9 +16,13 @@ services:
       - coredns-config:/config
 
   caddy:
-    build: ./caddy
-    restart: always
     env_file: ./.env
+    build:
+      context: ./caddy
+      args:
+        - HOST_IP=$HOST_IP
+        - HOST_NAME=$HOST_NAME
+    restart: always
     ports:
       - 443:443
     volumes:
@@ -35,9 +43,6 @@ services:
   sftpgo:
     build: ./sftpgo
     restart: always
-    group_add:
-      # radicale group for volume access
-      - '2999'
     labels:
       # stop container during backup
       - docker-volume-backup.stop-during-backup=true
@@ -52,7 +57,13 @@ services:
       - radicale-data:/srv/sftpgo/external/radicale
 
   radicale:
-    build: ./radicale
+    build:
+      context: ./radicale
+      args:
+        # reset uid and gid to default which is
+        # needed for sftpgo the access the user folder
+        - BUILD_UID=1000
+        - BUILD_GID=1000
     restart: always
     init: true
     labels:
@@ -69,7 +80,7 @@ services:
     restart: always
     volumes:
       # TODO: set correct backup path here
-      # - ./backup:/archive
+      # - ./path/to/target:/archive
       # volumes to backup
       - sftpgo-data:/backup/sftpgo-data:ro
       - sftpgo-config:/backup/sftpgo-config:ro

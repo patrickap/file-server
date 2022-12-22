@@ -15,3 +15,14 @@ USER 1000:1000
 
 HEALTHCHECK  --interval=60s --timeout=10s --retries=3 \
   CMD curl --fail http://localhost:9200/healthz || exit 1
+
+# web interface
+EXPOSE 9200
+
+# webdav
+EXPOSE 9400
+
+# sftp
+EXPOSE 9600
+
+CMD ["sftpgo", "serve"]
