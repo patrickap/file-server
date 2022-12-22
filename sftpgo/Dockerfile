@@ -4,9 +4,10 @@ FROM drakkan/sftpgo:v2.4.2
 ENV SFTPGO_HTTPD__BINDINGS__0__PORT="9200"
 ENV SFTPGO_WEBDAVD__BINDINGS__0__PORT="9400"
 ENV SFTPGO_SFTPD__BINDINGS__0__PORT="9600"
-ENV SFTPGO_LOADDATA_FROM="/etc/sftpgo/init.json"
+ARG SFTPGO_LOADDATA_FROM="/etc/sftpgo/init.json"
+ENV SFTPGO_LOADDATA_FROM=$SFTPGO_LOADDATA_FROM
 
-COPY ./init.json /etc/sftpgo/init.json
+COPY ./init.json $SFTPGO_LOADDATA_FROM
 
 # root user is temporary needed for installing packages
 USER root
