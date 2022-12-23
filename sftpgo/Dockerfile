@@ -17,9 +17,7 @@ COPY --chmod=0755 ./trash_action.sh /var/lib/sftpgo/trash_action.sh
 
 # root user is temporary needed for installing packages
 USER root
-
 RUN  apt-get update && apt-get install -y curl
-
 # reset to default sftpgo user
 USER 1000:1000
 
