@@ -1,16 +1,12 @@
 FROM drakkan/sftpgo:v2.4.2
 
 ARG LOG_LEVEL="info"
-ARG INIT_FILE="/etc/sftpgo/init.json"
+
+ENV SFTPGO_LOG_LEVEL=$LOG_LEVEL
 
 # https://github.com/drakkan/sftpgo/blob/main/sftpgo.json
-ENV SFTPGO_LOG_LEVEL=$LOG_LEVEL
-ENV SFTPGO_LOADDATA_FROM=$INIT_FILE
-ENV SFTPGO_HTTPD__BINDINGS__0__PORT="9200"
-ENV SFTPGO_WEBDAVD__BINDINGS__0__PORT="9400"
-ENV SFTPGO_SFTPD__BINDINGS__0__PORT="9600"
-
-COPY ./init.json $INIT_FILE
+COPY ./sftpgo.json /var/lib/sftpgo/sftpgo.json
+COPY ./init.json /var/lib/sftpgo/init.json
 
 # root user is temporary needed for installing packages
 USER root
@@ -32,4 +28,4 @@ EXPOSE 9400
 # sftp
 EXPOSE 9600
 
-CMD ["sftpgo", "serve"]
+CMD ["sftpgo", "serve", "--loaddata-from", "/var/lib/sftpgo/init.json"]

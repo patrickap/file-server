@@ -1,0 +1,29 @@
+{
+  "common": {
+    "actions": {
+      "execute_on": [],
+      "hook": ""
+    }
+  },
+  "httpd": {
+    "bindings": [
+      {
+        "port": 9200
+      }
+    ]
+  },
+  "webdavd": {
+    "bindings": [
+      {
+        "port": 9400
+      }
+    ]
+  },
+  "sftpd": {
+    "bindings": [
+      {
+        "port": 9600
+      }
+    ]
+  }
+}
