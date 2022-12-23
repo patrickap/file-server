@@ -9,7 +9,7 @@ filename=$(basename -- "$filepath")
 
 mkdir -p /srv/sftpgo/data/${username}/.trash
 
-# the --backup flag increments identical filenames instead of overwriting them
+# move and increments identical filenames instead of overwriting them
 mv --backup=t ${filepath} /srv/sftpgo/data/${username}/.trash/${filename}
 
 exit 0

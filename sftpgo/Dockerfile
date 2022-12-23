@@ -35,4 +35,5 @@ EXPOSE 9400
 # sftp
 EXPOSE 9600
 
+# start server and initialize using an init file
 CMD ["sftpgo", "serve", "--loaddata-from", "/var/lib/sftpgo/init.json"]
