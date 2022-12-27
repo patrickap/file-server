@@ -81,8 +81,9 @@ services:
     init: true
     restart: always
     volumes:
-      # TODO: set correct backup path here
-      # - /<path_to_target>:/archive
+      # TODO: set backup and tmp path
+      # - /path/to/backup:/archive
+      # - /path/to/backup/tmp:/tmp
       # volumes to backup
       - sftpgo-data:/backup/sftpgo-data:ro
       - sftpgo-config:/backup/sftpgo-config:ro
