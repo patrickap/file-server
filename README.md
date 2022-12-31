@@ -4,11 +4,11 @@ Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 
 ### Getting started
 
-1. install `docker` and `docker compose` plugin
+1. Install `docker` and the `docker compose` plugin.
 
-2. create an `.env` file and set the corresponding values
+2. Create an `.env` file using the `.env.example` and set the corresponding values.
 
-3. set target for backups in `docker-compose.yml`
+3. Set the target and temporary path for backups in the `docker-compose.yml`.
 
 ```yml
 ...
@@ -21,28 +21,54 @@ backup:
 ...
 ```
 
-4. set up the local dns server on the router by entering the host ip
+4. Set up and enable the local dns server on the router.
 
-5. start the containers
+5. Start the containers in the background.
 
 ```bash
 docker compose up -d
 ```
 
-6. backups are created automatically but can also be created manually
+6. The services are available as follows:
+
+- coredns
+  - <host_ip>:53
+- caddy
+  - <host_ip>:443
+- portainer
+  - <host_ip>:9000
+  - https://portainer.<host_name>
+- sftpgo (http)
+  - <host_ip>:9200
+  - https://sftpgo.<host_name>
+- sftpgo (webdav)
+  - <host_ip>:9400
+  - https://webdav.sftpgo.<host_name>
+- sftpgo (sftp)
+  - <host_ip>:9600
+  - https://sftpgo.<host_name>
+- radicale (http, caldav, carddav)
+  - <host_ip>:9800
+  - https://radicale.<host_name>
+- certificate (root ssl/tls certificate download)
+  - https://certificate.<host_name>
+
+7. At this point the individual users for each service can be created. There is a pre-configured user group in SFTPGo which makes it possible to reference the CalDav and CardDav data from Radicale. The only requirement is that the user names of both services match and the group `RadicaleGroup` has been set in the user settings of SFTPGo.
+
+8. Backups are created automatically but can also be created manually.
 
 ```bash
 # create manual backup
 docker exec <backup_container_name> backup
 ```
 
-7. to access or copy backups available on the remote host `scp` can be used
+9. To access or copy backups available on the remote host the command-line tool `scp` can be used.
 
 ```bash
 scp username@<host_ip>:/path/to/source.tar.gz  /path/to/target
 ```
 
-8. to restore a backup, a new volume with the correct name must be created including the contents of the backup
+10. To restore a backup a new volume with the correct name must be created including the contents of the backup. Additional information can be found in the docs of docker-volume-backup: https://github.com/offen/docker-volume-backup#restoring-a-volume-from-a-backup
 
 ```bash
 # stop all containers that are using the volume
@@ -52,7 +78,6 @@ docker stop <container_name>
 tar -C /tmp -xvf  backup.tar.gz
 
 # use a temporary once-off container to mount the volume and copy the backup
-# additional information can be found in the docs https://github.com/offen/docker-volume-backup#restoring-a-volume-from-a-backup
 docker run -d --name <temporary_container_name> -v <volume_name>:/path/to/mount alpine
 docker cp /tmp/backup/<volume_name> <temporary_container_name>:/path/to/mount
 docker stop <temporary_container_name>
