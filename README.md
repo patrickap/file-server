@@ -75,7 +75,7 @@ scp username@<host_ip>:/path/to/source.tar.gz  /path/to/target
 docker stop <container_name>
 
 # untar the backup
-tar -C /tmp -xvf  backup.tar.gz
+tar -C /tmp -xvzf  backup.tar.gz
 
 # use a temporary once-off container to mount the volume and copy the backup
 docker run -d --name <temporary_container_name> -v <volume_name>:/path/to/mount alpine
