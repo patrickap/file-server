@@ -62,13 +62,27 @@ docker compose up -d
 docker exec <backup_container_name> backup
 ```
 
-9. To access or copy backups available on the remote host the command-line tool `scp` can be used.
+9. Uploading backups to a cloud is supported using rclone. Configure a remote using `rclone config` inside the backup container and set up the upload script in the `docker-compose.yml`
+
+```yml
+...
+backup:
+  ...
+  labels:
+    - docker-volume-backup.copy-post=/bin/sh -c 'rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
+  ...
+...
+```
+
+10. Encrypting backups during creation is possible with `gpg` by setting the `GPG_PASSPHRASE` as argument or environemnt variable.
+
+11. To access or copy backups available on the remote host the command-line tool `scp` can be used.
 
 ```bash
 scp username@<host_ip>:/path/to/source.tar.gz  /path/to/target
 ```
 
-10. To restore a backup a new volume with the correct name must be created including the contents of the backup. Additional information can be found in the docs of docker-volume-backup: https://github.com/offen/docker-volume-backup#restoring-a-volume-from-a-backup
+12. To restore a backup a new volume with the correct name must be created including the contents of the backup. Additional information can be found in the docs of docker-volume-backup: https://github.com/offen/docker-volume-backup#restoring-a-volume-from-a-backup
 
 ```bash
 # stop all containers that are using the volume

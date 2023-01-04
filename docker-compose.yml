@@ -80,6 +80,9 @@ services:
       context: ./volume-backup
     init: true
     restart: always
+    # TODO: set command for cloud upload
+    # labels:
+    # - docker-volume-backup.copy-post=/bin/sh -c 'rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
     volumes:
       # TODO: set backup and tmp path
       # - /path/to/backup:/archive
