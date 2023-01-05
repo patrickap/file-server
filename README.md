@@ -2,11 +2,23 @@
 
 Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 
-### Getting started
+### Requirements
 
-1. Install `docker` and the `docker compose` plugin.
+To run this application the following is needed:
 
-2. The Docker Daemon must be configured by creating or updating the `/etc/docker/daemon.json`. Since a DNS Service is running, there must be an explicit DNS entry to be able to access the internet from within the containers. In addition another directory or can be defined for the docker root. This is useful for storing the volume data on a different drive.
+- [linux server](https://ubuntu.com/download/server) (Ubuntu Server 22.04 LTS is tested and recommended)
+- [docker](https://docs.docker.com/engine/install/ubuntu/) and [docker compose plugin](https://docs.docker.com/compose/install/linux/)
+- router with possibility of configuring a custom DNS
+
+### Installation and host configuration
+
+Clone this repository using `git clone https://github.com/patrickap/file-server.git`
+
+An `.env` configuration file is required and must be created manually. The content can be derived from the `.env.example` in the root directory.
+
+The `docker.compose.yml` must be adapted to your own needs. The relevant parts are marked with `TODO: ...`. This is especially important for backups. Please refer to the corresponding section.
+
+Some of the containers need internet access to install their packages. For this to work the DNS used by the docker daemon must be configured correctly. It is also possible to specify a custom docker root. This is especially useful if the data of the volumes needs to be stored on a different disk. To edit or create the configuration for the first time type `nano /etc/docker/daemon.json`.
 
 ```json
 {
@@ -15,84 +27,65 @@ Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 }
 ```
 
-3. Create an `.env` file using the `.env.example` and set the corresponding values.
+Before going further you should adjust your router to use your own DNS service. Otherwise the services are not reachable by their domain name. The DNS service is available under `<host_ip>:53`.
 
-4. Set the target and temporary path for backups in the `docker-compose.yml`.
+### Server startup
 
-```yml
-...
-backup_local:
-  ...
-  volumes:
-    - /path/to/backup:/archive
-    - /path/to/backup/tmp:/tmp
-  ...
-...
-```
-
-5. Set up and enable the local dns server on the router.
-
-6. Start the containers in the background.
+To start simply run the containers detached in the background.
 
 ```bash
 docker compose up -d
 ```
 
-7. The services are available as follows:
+### Server configuration
 
-- coredns
-  - <host_ip>:53
-- caddy
-  - <host_ip>:443
-- portainer
-  - <host_ip>:9000
-  - https://portainer.<host_name>
-- sftpgo (http)
-  - <host_ip>:9200
-  - https://sftpgo.<host_name>
-- sftpgo (webdav)
-  - <host_ip>:9400
-  - https://webdav.sftpgo.<host_name>
-- sftpgo (sftp)
-  - <host_ip>:9600
-  - https://sftpgo.<host_name>
-- radicale (http, caldav, carddav)
-  - <host_ip>:9800
-  - https://radicale.<host_name>
-- certificate (root ssl/tls certificate download)
-  - https://certificate.<host_name>
+In order to access the services on the local network through a secure connection (without warnings), it is necessary to install the root certificate on all devices. The certificate can be downloaded here: `https://certificate.<host_name>`.
 
-8. At this point the individual users for each service can be created. There is a pre-configured user group in SFTPGo which makes it possible to reference the CalDav and CardDav data from Radicale. The only requirement is that the user names of both services match and the group `RadicaleGroup` has been set in the user settings of SFTPGo.
+To manage running and new containers open `https://portainer.<host_name>` or `<host_ip>:9000`. At the beginning an admin user must be created. Further information: [Portainer Docs](https://docs.portainer.io)
 
-9. Backups are created automatically (local daily, remote weekly) but can also be created manually.
+The calendar and contacts server is available under `https://radicale.<host_name>` or `<host_ip>:9800`. Users can be created as desired. Further information: [Radicale Docs](https://radicale.org/v3.html)
 
-```bash
-# create manual backup
-docker exec <backup_local> backup
-docker exec <backup_remote> backup
-```
+The file server itself can be reached via `https://sftpgo.<host_name>` or `<host_ip>:9200`. The users can be created at this time. If calendars and contacts should be displayed as virtual folder it is required the add the pre-configured group `RadicaleGroup`. For a correct mapping it is also necessary that the usernames of both services match. Further information: [SFTPGo Docs](https://github.com/drakkan/sftpgo/tree/main/docs)
 
-10. Uploading backups to a cloud is supported using rclone. Configure a remote using `rclone config` inside the `backup_remote` container and set up the upload script in the `docker-compose.yml`
+- access via WebDAV: `https://webdav.sftpgo.<host_name>` or `<host_ip>:9400`
+- access via SFTP: `https://sftpgo.<host_name>` or `<host_ip>:9600`
+
+### Server backup management
+
+To access the backups outside Docker it is necessary to make them available to the host using bind mounts. To copy backups automatically to the cloud, a job must be specified in the lifecycle hook using a label. It is recommended to use `rclone` since it is installed by default. After the containers have been started, the configuration must be created within the `backup_remote` container using the `rclone config` command. For performance reasons a [custom client-id](https://rclone.org/drive/#making-your-own-client-id) should be created when using Google Drive. In order to not fill up the cloud storage unnecessarily it is also a good idea to disable the trash in the advanced configuration.
 
 ```yml
 ...
+backup_local:
+	...
+	volumes:
+	# bind mount the backup volumes to a custom location
+	- /path/to/backup:/archive
+	- /path/to/backup/tmp:/tmp
+	...
 backup_remote:
-  ...
-  labels:
-    - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
-  ...
+	...
+	labels:
+	# backup data to a cloud using rclone
+	- docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
+	...
 ...
 ```
 
-11. Encrypting backups during creation is possible with `gpg` by setting the `GPG_PASSPHRASE` as argument or environemnt variable.
-
-12. To access or copy backups available on the remote host the command-line tool `scp` can be used.
+Backups are created automatically (local daily, remote weekly) but can also be created manually.
 
 ```bash
-scp username@<host_ip>:/path/to/source.tar.gz  /path/to/target
+# create manual backup
+docker exec <container_name> backup
 ```
 
-13. To restore a backup a new volume with the correct name must be created including the contents of the backup. Additional information can be found in the docs of docker-volume-backup: https://github.com/offen/docker-volume-backup#restoring-a-volume-from-a-backup
+To access or copy backups available on the remote host the command-line tool `scp` can be used.
+
+```bash
+scp username@<host_ip>:/path/to/source.tar.gz /path/to/target
+```
+
+To restore a backup a new volume with the correct name must be created including the contents of the backup.
 
 ```bash
 # stop all containers that are using the volume
@@ -109,4 +102,18 @@ docker rm <temporary_container_name>
 
 # start all stopped containers
 docker start <container_name>
+```
+
+Further information: [offen/docker-volume-backup Docs](https://github.com/offen/docker-volume-backup)
+
+### Server updates
+
+If something in `docker-compose.yml` changes it is usually sufficient to restart the containers. However, sometimes it may be necessary to update image versions. In this case it is necessary to rebuild the containers.
+
+```bash
+# update
+docker compose up -d
+
+# update and rebuild
+docker compose up -d --build <optional_service_name>
 ```
