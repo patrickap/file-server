@@ -57,18 +57,18 @@ To access the backups outside Docker it is necessary to make them available to t
 ```yml
 ...
 backup_local:
-	...
-	volumes:
-	# bind mount the backup volumes to a custom location
-	- /path/to/backup:/archive
-	- /path/to/backup/tmp:/tmp
-	...
+  ...
+  volumes:
+    # bind mount the backup volumes to a custom location
+    - /path/to/backup:/archive
+    - /path/to/backup/tmp:/tmp
+  ...
 backup_remote:
 	...
 	labels:
-	# backup data to a cloud using rclone
-	- docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
-	...
+	  # backup data to a cloud using rclone
+	  - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
+	..
 ...
 ```
 
