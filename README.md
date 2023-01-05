@@ -68,7 +68,7 @@ backup_remote:
   labels:
     # backup data to a cloud using rclone
     - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
-  ..
+  ...
 ...
 ```
 
