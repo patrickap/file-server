@@ -76,7 +76,8 @@ Backups are created automatically (local daily, remote weekly) but can also be c
 
 ```bash
 # create manual backup
-docker exec <container_name> backup
+docker exec <backup_local_container> backup
+docker exec <backup_remote_container> backup
 ```
 
 To access or copy backups available on the remote host the command-line tool `scp` can be used.
