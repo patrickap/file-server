@@ -12,7 +12,7 @@ Local file sync server with support for sftp, webdav, caldav and carddav. 📁
 
 ```yml
 ...
-backup:
+backup_local:
   ...
   volumes:
     - /path/to/backup:/archive
@@ -55,21 +55,22 @@ docker compose up -d
 
 7. At this point the individual users for each service can be created. There is a pre-configured user group in SFTPGo which makes it possible to reference the CalDav and CardDav data from Radicale. The only requirement is that the user names of both services match and the group `RadicaleGroup` has been set in the user settings of SFTPGo.
 
-8. Backups are created automatically but can also be created manually.
+8. Backups are created automatically (local daily, remote weekly) but can also be created manually.
 
 ```bash
 # create manual backup
-docker exec <backup_container_name> backup
+docker exec <backup_local> backup
+docker exec <backup_remote> backup
 ```
 
-9. Uploading backups to a cloud is supported using rclone. Configure a remote using `rclone config` inside the backup container and set up the upload script in the `docker-compose.yml`
+9. Uploading backups to a cloud is supported using rclone. Configure a remote using `rclone config` inside the `backup_remote` container and set up the upload script in the `docker-compose.yml`
 
 ```yml
 ...
-backup:
+backup_remote:
   ...
   labels:
-    - docker-volume-backup.copy-post=/bin/sh -c 'rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
+    - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
   ...
 ...
 ```
