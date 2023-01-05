@@ -18,7 +18,7 @@ An `.env` configuration file is required and must be created manually. The conte
 
 The `docker.compose.yml` must be adapted to your own needs. The relevant parts are marked with `TODO: ...`. This is especially important for backups. Please refer to the corresponding section.
 
-Some of the containers need internet access to install their packages. For this to work the DNS used by the docker daemon must be configured correctly. It is also possible to specify a custom docker root. This is especially useful if the data of the volumes needs to be stored on a different disk. To edit or create the configuration for the first time type `nano /etc/docker/daemon.json`.
+Some of the containers need internet access to install their packages. For this to work the DNS used by the docker daemon must be configured correctly. It is also possible to specify a custom docker root. This is especially useful if the data of the volumes needs to be stored on a different disk. To edit or create the configuration for the first time type `nano /etc/docker/daemon.json` and restart docker via `sudo service docker restart`.
 
 ```json
 {
