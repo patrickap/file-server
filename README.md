@@ -45,6 +45,9 @@ To manage running and new containers open `https://portainer.<host_name>` or `<h
 
 The calendar and contacts server is available under `https://radicale.<host_name>` or `<host_ip>:9800`. Users can be created as desired. Further information: [Radicale Docs](https://radicale.org/v3.html)
 
+- access via CalDAV: `https://radicale.<host_name>` or `<host_ip>:9800`
+- access via CardDAV: `https://radicale.<host_name>` or `<host_ip>:9800`
+
 The file server itself can be reached via `https://sftpgo.<host_name>` or `<host_ip>:9200`. The users can be created at this time. If calendars and contacts should be displayed as virtual folder it is required the add the pre-configured group `RadicaleGroup`. For a correct mapping it is also necessary that the usernames of both services match. Further information: [SFTPGo Docs](https://github.com/drakkan/sftpgo/tree/main/docs)
 
 - access via WebDAV: `https://webdav.sftpgo.<host_name>` or `<host_ip>:9400`
