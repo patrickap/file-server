@@ -112,7 +112,7 @@ Further information: [offen/docker-volume-backup Docs](https://github.com/offen/
 
 ### Server updates
 
-If something in `docker-compose.yml` changes it is usually sufficient to restart the containers. However, sometimes it may be necessary to update image versions. In this case it is necessary to rebuild the containers.
+If something in `docker-compose.yml` changes it is usually sufficient to restart the containers. However, sometimes it may be necessary to update image versions or build arguments. In this case it is necessary to rebuild the containers.
 
 ```bash
 # update
