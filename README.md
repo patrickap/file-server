@@ -55,7 +55,7 @@ The file server itself can be reached via `https://sftpgo.<host_name>` or `<host
 
 ### Server backup management
 
-To access the backups outside Docker it is necessary to make them available to the host using bind mounts. To copy backups automatically to the cloud, a job must be specified in the lifecycle hook using a label. It is recommended to use `rclone` since it is installed by default. After the containers have been started, the configuration must be created within the `backup_remote` container using the `rclone config` command. For performance reasons a [custom client-id](https://rclone.org/drive/#making-your-own-client-id) should be created when using Google Drive. In order to not fill up the cloud storage unnecessarily it is also a good idea to disable the trash in the advanced configuration.
+To access the backups outside Docker it is necessary to make them available to the host using bind mounts. To copy backups automatically to the cloud, a job must be specified in the lifecycle hook using a label. It is recommended to use `rclone` since it is installed by default. After the containers have been started, the configuration must be created within the `backup_remote` container using the `rclone config` command. For performance reasons a [custom client-id](https://rclone.org/drive/#making-your-own-client-id) should be created when using Google Drive. In order to not fill up the cloud storage unnecessarily during an optional `rclone purge` it is also a good idea to disable the trash in the advanced configuration.
 
 ```yml
 ...
