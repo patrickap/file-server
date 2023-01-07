@@ -97,6 +97,8 @@ services:
       - sftpgo-config:/backup/sftpgo-config:ro
       - radicale-data:/backup/radicale-data:ro
       - radicale-config:/backup/radicale-config:ro
+      # remote backup config
+      - rclone-config:/root/.config/rclone
       # provide host information
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -119,7 +121,7 @@ services:
       # only trigger hook if exec label is defined
       - docker-volume-backup.exec-label=backup-remote
       # TODO: set command for cloud upload
-      # - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup'
+      # - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup --progress --stats 15m --stats-one-line-date --verbose >> /proc/1/fd/1'
     volumes: *backup_volumes
 
 volumes:
@@ -131,3 +133,4 @@ volumes:
   sftpgo-config:
   radicale-data:
   radicale-config:
+  rclone-config:
