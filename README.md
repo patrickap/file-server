@@ -95,8 +95,11 @@ To restore a backup a new volume with the correct name must be created including
 # stop all containers that are using the volume
 docker stop <container_name>
 
+# decrypt the backup (if necessary)
+gpg -d backup.tar.gz.gpg -o backup.tar.gz
+
 # untar the backup
-tar -C /tmp -xvzf backup.tar.gz
+tar -xvzf backup.tar.gz -C /tmp
 
 # use a temporary once-off container to mount the volume and copy the backup
 docker run -d --name <temporary_container_name> -v <volume_name>:/path/to/mount alpine
