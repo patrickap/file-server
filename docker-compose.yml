@@ -51,7 +51,7 @@ services:
       # add radical default group for accessing the volume
       - '2999'
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - dockup-backup-stop=true
     ports:
       - 9200:9200
       - 9400:9400
@@ -68,61 +68,33 @@ services:
     init: true
     restart: always
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - dockup-backup-stop=true
     ports:
       - 9800:9800
     volumes:
       - radicale-data:/data
       - radicale-config:/config
 
-  backup_local:
+  dockup:
     build:
-      context: ./volume-backup
+      context: ./dockup
       args:
-        - BACKUP_FILENAME=backup-local-%Y-%m-%d_%H.%M.%S.tar.gz
-        # run at 00:00 every day (expect sunday)
-        - BACKUP_CRON_EXPRESSION=0 0 * * 1-6
-        - BACKUP_PRUNING_PREFIX=backup-local-
-        # remove backups older than 7 days
-        - BACKUP_RETENTION_DAYS=7
-        - EXEC_LABEL=backup-local
+        - REMOTE_BACKUP_PASSPHRASE=$REMOTE_BACKUP_PASSPHRASE
     init: true
     restart: always
-    volumes: &backup_volumes
-      # TODO: set backup and tmp path
-      # - /path/to/backup:/archive
-      # - /path/to/backup/tmp:/tmp
+    volumes:
+      # TODO: bind mount backups
+      # - /path/to/backup:/target
       # volumes to backup
-      - sftpgo-data:/backup/sftpgo-data:ro
-      - sftpgo-config:/backup/sftpgo-config:ro
-      - radicale-data:/backup/radicale-data:ro
-      - radicale-config:/backup/radicale-config:ro
+      - sftpgo-data:/source/sftpgo-data:ro
+      - sftpgo-config:/source/sftpgo-config:ro
+      - radicale-data:/source/radicale-data:ro
+      - radicale-config:/source/radicale-config:ro
       # remote backup config
       - rclone-config:/root/.config/rclone
       # provide host information
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  backup_remote:
-    build:
-      context: ./volume-backup
-      args:
-        - BACKUP_FILENAME=backup-remote-%Y-%m-%d_%H.%M.%S.tar.gz
-        # run at 00:00 every week (on sunday)
-        - BACKUP_CRON_EXPRESSION=0 0 * * 0
-        - BACKUP_PRUNING_PREFIX=backup-remote-
-        # remove backups older than 7 days
-        - BACKUP_RETENTION_DAYS=7
-        - GPG_PASSPHRASE=$BACKUP_PASSPHRASE
-        - EXEC_LABEL=backup-remote
-    init: true
-    restart: always
-    labels:
-      # only trigger hook if exec label is defined
-      - docker-volume-backup.exec-label=backup-remote
-      # TODO: set command for cloud upload
-      # - docker-volume-backup.copy-post=/bin/sh -c 'rclone purge remote:backup ; rclone copy $$COMMAND_RUNTIME_ARCHIVE_FILEPATH remote:backup --progress --verbose --stats 15m >> /proc/1/fd/1'
-    volumes: *backup_volumes
 
 volumes:
   coredns-config:
