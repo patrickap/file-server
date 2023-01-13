@@ -1,3 +1,3 @@
-${DIFFERENTIAL_BACKUP_CRON} /bin/sh -c "/usr/local/bin/differential-backup.sh"
-${FULL_BACKUP_CRON} /bin/sh -c "/usr/local/bin/full-backup.sh"
-${REMOTE_BACKUP_CRON} /bin/sh -c "/usr/local/bin/remote-backup.sh"
+${DIFFERENTIAL_BACKUP_CRON} timeout ${DIFFERENTIAL_BACKUP_LOCK_TIMEOUT_HOURS}h flock -n /source/dockup-backup.lock -c "/usr/local/bin/differential-backup.sh" >> /proc/1/fd/1
+${FULL_BACKUP_CRON} timeout ${FULL_BACKUP_LOCK_TIMEOUT_HOURS}h flock -n /source/dockup-backup.lock -c "/usr/local/bin/full-backup.sh" >> /proc/1/fd/1
+${REMOTE_BACKUP_CRON} timeout ${REMOTE_BACKUP_LOCK_TIMEOUT_HOURS}h flock -n /source/dockup-backup.lock -c "/usr/local/bin/remote-backup.sh" >> /proc/1/fd/1

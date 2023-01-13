@@ -3,11 +3,11 @@
 timestamp="$(date +'%Y-%m-%d %H:%M:%S')"
 source_dir='/source'
 target_dir='/target/differential-backup'
-backup_retention="30"
+backup_retention_days="30"
 
 # set environment variables defined by docker
-if [ -n "${DIFFERENTIAL_BACKUP_RETENTION}" ]; then
-  backup_retention=${DIFFERENTIAL_BACKUP_RETENTION}
+if [ -n "${DIFFERENTIAL_BACKUP_RETENTION_DAYS}" ]; then
+  backup_retention_days=${DIFFERENTIAL_BACKUP_RETENTION_DAYS}
 fi
 
 echo "[${timestamp}] Starting differential backup" >> /proc/1/fd/1
@@ -16,8 +16,8 @@ echo "[${timestamp}] Starting differential backup" >> /proc/1/fd/1
 mkdir -p ${source_dir} ${target_dir}
 
 # retention policy: delete previous backups
-echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention} day(s)" >> /proc/1/fd/1
-rdiff-backup --remove-older-than "${backup_retention}D" ${target_dir} >> /proc/1/fd/1
+echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention_days} day(s)" >> /proc/1/fd/1
+rdiff-backup --remove-older-than "${backup_retention_days}D" ${target_dir} >> /proc/1/fd/1
 
 # stop containers labeled with "dockup-backup-stop=true"
 echo "[${timestamp}] Stopping containers labeled with 'dockup-backup-stop=true'" >> /proc/1/fd/1

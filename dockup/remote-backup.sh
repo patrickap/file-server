@@ -4,11 +4,11 @@ timestamp="$(date +'%Y-%m-%d %H:%M:%S')"
 source_dir='/source'
 target_dir='/target/remote-backup'
 backup_name="remote-backup-$(date +'%Y-%m-%d_%H.%M.%S')"
-backup_retention="7"
+backup_retention_days="7"
 
 # set environment variables defined by docker
-if [ -n "${REMOTE_BACKUP_RETENTION}" ]; then
-  backup_retention=${REMOTE_BACKUP_RETENTION}
+if [ -n "${REMOTE_BACKUP_RETENTION_DAYS}" ]; then
+  backup_retention_days=${REMOTE_BACKUP_RETENTION_DAYS}
 fi
 
 echo "[${timestamp}] Starting remote backup" >> /proc/1/fd/1
@@ -17,9 +17,9 @@ echo "[${timestamp}] Starting remote backup" >> /proc/1/fd/1
 mkdir -p ${source_dir} ${target_dir}
 
 # retention policy: delete previous backups
-echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention} day(s)" >> /proc/1/fd/1
-rclone delete --skip-trash --min-age "${backup_retention}d" remote:${target_dir}
-find ${target_dir} -type f -mtime +$backup_retention -delete
+echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention_days} day(s)" >> /proc/1/fd/1
+rclone delete --skip-trash --min-age "${backup_retention_days}d" remote:${target_dir}
+find ${target_dir} -type f -mtime +${backup_retention_days} -delete
 
 # stop containers labeled with "dockup-backup-stop=true"
 echo "[${timestamp}] Stopping containers labeled with 'dockup-backup-stop=true'" >> /proc/1/fd/1

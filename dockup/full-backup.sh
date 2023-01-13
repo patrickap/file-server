@@ -4,11 +4,11 @@ timestamp="$(date +'%Y-%m-%d %H:%M:%S')"
 source_dir='/source'
 target_dir='/target/full-backup'
 backup_name="full-backup-$(date +'%Y-%m-%d_%H.%M.%S')"
-backup_retention="7"
+backup_retention_days="7"
 
 # set environment variables defined by docker
-if [ -n "${FULL_BACKUP_RETENTION}" ]; then
-  backup_retention=${FULL_BACKUP_RETENTION}
+if [ -n "${FULL_BACKUP_RETENTION_DAYS}" ]; then
+  backup_retention_days=${FULL_BACKUP_RETENTION_DAYS}
 fi
 
 echo "[${timestamp}] Starting full backup" >> /proc/1/fd/1
@@ -17,8 +17,8 @@ echo "[${timestamp}] Starting full backup" >> /proc/1/fd/1
 mkdir -p ${source_dir} ${target_dir}
 
 # retention policy: delete previous backups
-echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention} day(s)" >> /proc/1/fd/1
-find ${target_dir} -type f -mtime +$backup_retention -delete
+echo "[${timestamp}] Removing previous backups respecting the retention policy > ${backup_retention_days} day(s)" >> /proc/1/fd/1
+find ${target_dir} -type f -mtime +${backup_retention_days} -delete
 
 # stop containers labeled with "dockup-backup-stop=true"
 echo "[${timestamp}] Stopping containers labeled with 'dockup-backup-stop=true'" >> /proc/1/fd/1
